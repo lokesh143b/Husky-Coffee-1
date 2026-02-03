@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import Logo from "../../public/Logo.png"
+import Logo from "../../public/Logo.png";
 import Image from "next/image";
 
 const navItems = ["Home", "Menu", "About"];
@@ -21,12 +21,11 @@ export default function Navbar() {
       {/* Glass background */}
       <div className="backdrop-blur-md bg-black/40 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-4 flex items-center justify-between text-white">
-          
           {/* Logo */}
 <Link
   href="/"
   onClick={() => setOpen(false)}
-  className="group flex items-center"
+  className="group flex items-center gap-3"
 >
   <motion.div
     initial={{ opacity: 0, scale: 0.85 }}
@@ -41,16 +40,29 @@ export default function Navbar() {
     {/* Glass ring */}
     <span className="absolute inset-0 rounded-full border border-white/20 backdrop-blur-md" />
 
-    {/* Logo */}
+    {/* Logo image */}
     <Image
       src={Logo}
-      alt="Husky Coffee Logo"
+      alt="Huskyy Coffee Logo"
       fill
       priority
       sizes="64px"
       className="relative z-10 rounded-full object-contain bg-black/30 p-2 shadow-xl"
     />
   </motion.div>
+
+  {/* Brand name */}
+{/* Brand name */}
+<span className="flex flex-col leading-none">
+  <span className="text-2xl sm:text-3xl font-serif font-semibold text-neutral-100">
+    Huskyy
+  </span>
+  <span className="text-sm sm:text-base tracking-widest text-amber-300">
+    COFFEE
+  </span>
+</span>
+
+
 </Link>
 
 
