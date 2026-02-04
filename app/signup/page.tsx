@@ -13,30 +13,24 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
 
-    // Use FormData for safer access
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+    });
 
-      if (res.ok) {
-        router.push("/login");
-      } else {
-        const errorData = await res.json();
-        alert(errorData.message || "Signup failed. Try again.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong. Try again.");
-    } finally {
-      setLoading(false);
+    setLoading(false);
+
+    if (res.ok) {
+      router.push("/login");
+    } else {
+      alert("Signup failed. Try again.");
     }
   }
 
@@ -100,9 +94,7 @@ export default function SignupPage() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             disabled={loading}
-            className={`w-full py-2 rounded-lg font-semibold text-white transition
-              ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#7f5539] hover:bg-[#6f4e37]"}
-            `}
+            className="w-full bg-[#7f5539] text-white py-2 rounded-lg font-semibold hover:bg-[#6f4e37] transition"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </motion.button>
@@ -110,7 +102,10 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#7f5539] font-semibold hover:underline">
+          <Link
+            href="/login"
+            className="text-[#7f5539] font-semibold hover:underline"
+          >
             Login
           </Link>
         </p>
