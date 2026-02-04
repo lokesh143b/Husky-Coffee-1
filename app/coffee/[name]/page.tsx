@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import {allCoffees , Coffee } from "../../data/coffeeData";
-import Reviews from "@/app/components/Reviews";
+import {allCoffees , Coffee } from "../../../data/coffeeData";
+import Reviews from "@/components/Reviews";
 
 
 
@@ -42,7 +42,6 @@ export default function CoffeeDetail() {
           className="lg:w-1/2 bg-white/10 backdrop-blur-md rounded-3xl p-8 sm:p-12 shadow-2xl"
         >
           <h1 className="text-5xl font-extrabold text-amber-400">{coffee.name}</h1>
-          <p className="text-white font-semibold text-2xl mt-2">{coffee.price}</p>
           <p className="text-white/90 mt-6 text-lg">{coffee.description}</p>
 
           <div className="mt-6 grid grid-cols-2 gap-4 text-white">

@@ -13,7 +13,7 @@ export default function CoffeeCard({ name, price, image }: Props) {
         <Image src={image} alt={name} fill className="object-cover" />
       </div>
       <h3 className="text-xl font-semibold mt-4 text-gray-800">{name}</h3>
-      <p className="text-amber-600 font-bold">{price}</p>
+     
     </div>
   );
 }

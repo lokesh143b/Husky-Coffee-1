@@ -1,7 +1,7 @@
 // Import the images
-import coffee1 from "../../public/coffee1.jpg";
-import coffee2 from "../../public/coffee2.jpg";
-import coffee3 from "../../public/coffee3.jpg";
+import coffee1 from "../public/coffee1.jpg";
+import coffee2 from "../public/coffee2.jpg";
+import coffee3 from "../public/coffee3.jpg";
 
 // Import the type for Next.js images
 import { StaticImageData } from "next/image";

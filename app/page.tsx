@@ -3,12 +3,13 @@
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import CoffeeCard from "./components/CoffeeCard";
 import { useRouter } from "next/navigation";
 
-import  { allCoffees,Coffee } from "./data/coffeeData";
-import WhyOurCoffee from "./components/WhyOurCoffee";
-import Reviews from "./components/Reviews";
+import  { allCoffees,Coffee } from "../data/coffeeData";
+
+import CoffeeCard from "@/components/CoffeeCard";
+import WhyOurCoffee from "@/components/WhyOurCoffee";
+import Reviews from "@/components/Reviews";
 
 // -----------------------------
 // Home Component
