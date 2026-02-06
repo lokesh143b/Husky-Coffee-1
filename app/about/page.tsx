@@ -1,5 +1,6 @@
 "use client";
 
+import DiscountSpinner from "@/components/DiscountSpinner";
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
@@ -99,6 +100,8 @@ export default function AboutPage() {
           “Good coffee is a pleasure. Great coffee is an experience.”
         </motion.div>
       </div>
+
+      <DiscountSpinner/>
     </section>
   );
 }

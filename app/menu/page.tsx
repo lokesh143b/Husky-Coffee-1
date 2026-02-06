@@ -1,6 +1,8 @@
 "use client";
 
+import Loader from "@/components/Loaders/Loader";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Product {
@@ -16,11 +18,19 @@ interface Product {
   image: string;
 }
 
-const categories = ["Coffee", "Tea", "Pastries" , "Cakes" , "Sandwiches" , "Others"];
+const categories = [
+  "Coffee",
+  "Tea",
+  "Pastries",
+  "Cakes",
+  "Sandwiches",
+  "Others",
+];
 
 export default function MenuPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/products")
@@ -29,11 +39,15 @@ export default function MenuPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-white text-center mt-20">Loading menu...</p>;
+  if (loading)
+    return (
+      <>
+        <Loader />
+      </>
+    );
 
   return (
     <section className="relative min-h-screen pt-32 pb-24 px-6 md:px-16 text-white overflow-hidden">
-
       {/* Luxury lighting */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black -z-10" />
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[120px]" />
@@ -58,7 +72,8 @@ export default function MenuPage() {
       <div className="max-w-6xl mx-auto space-y-24">
         {categories.map((category) => {
           const categoryItems = products.filter(
-            (product) => product.category.toLowerCase() === category.toLowerCase()
+            (product) =>
+              product.category.toLowerCase() === category.toLowerCase(),
           );
 
           if (categoryItems.length === 0) return null;
@@ -79,27 +94,46 @@ export default function MenuPage() {
                 {categoryItems.map((item, index) => (
                   <motion.div
                     key={item._id}
+                    onClick={() => router.push(`/menu/${item._id}`)}
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     whileHover={{ y: -12 }}
-                    className="group relative rounded-3xl p-6 bg-white/10 backdrop-blur-xl border border-white/10 shadow-xl hover:shadow-2xl transition"
+                    className="group relative rounded-3xl p-6 bg-white/10 backdrop-blur-xl border border-white/10 shadow-xl hover:shadow-2xl transition cursor-pointer"
                   >
                     {/* Glow */}
                     <div className="absolute inset-0 rounded-3xl bg-amber-400/0 group-hover:bg-amber-400/10 transition" />
 
                     {/* Content */}
                     <div className="relative z-10">
-                      <div className="text-4xl mb-4">{item.image ? <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-full" /> : "☕"}</div>
+                      <div className="text-4xl mb-4">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded-full"
+                          />
+                        ) : (
+                          "☕"
+                        )}
+                      </div>
 
-                      <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {item.name}
+                      </h3>
 
-                      <p className="text-gray-300 text-sm mb-6">{item.description}</p>
+                      <p className="text-gray-300 text-sm mb-6">
+                        {item.description}
+                      </p>
 
                       <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-amber-400">₹ {item.price}</span>
-                        <span className="text-xs uppercase tracking-widest text-gray-400">{item.category}</span>
+                        <span className="text-2xl font-bold text-amber-400">
+                          ₹ {item.price}
+                        </span>
+                        <span className="text-xs uppercase tracking-widest text-gray-400">
+                          {item.category}
+                        </span>
                       </div>
                     </div>
                   </motion.div>

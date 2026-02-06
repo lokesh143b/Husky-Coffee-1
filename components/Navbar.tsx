@@ -4,9 +4,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Logo from "../public/Logo.png";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
+import Logo from "../public/Logo.png";
 
 const navItems = ["Home", "Menu", "About"];
 
@@ -14,15 +14,20 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleAdminClick = () => {
     setOpen(false);
-
     if (status !== "authenticated") {
       router.push("/login");
     } else {
       router.push("/admin");
     }
+  };
+
+  const isActive = (item: string) => {
+    const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+    return pathname === path || pathname.startsWith(path + "/");
   };
 
   return (
@@ -74,18 +79,37 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8 lg:space-x-10 text-base lg:text-lg font-medium">
-            {navItems.map((item) => (
-              <Link
-                key={item}
-                href={`/${item === "Home" ? "" : item.toLowerCase()}`}
-                className="relative group"
-              >
-                <span className="transition-colors duration-300 group-hover:text-amber-400">
-                  {item}
-                </span>
-                <span className="absolute left-0 -bottom-2 h-[2px] w-0 bg-amber-400 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const active = isActive(item);
+
+              return (
+                <Link
+                  key={item}
+                  href={`/${item === "Home" ? "" : item.toLowerCase()}`}
+                  className="relative group"
+                >
+                  <span
+                    className={`transition-colors duration-300 ${
+                      active
+                        ? "text-amber-400"
+                        : "group-hover:text-amber-400"
+                    }`}
+                  >
+                    {item}
+                  </span>
+
+                  <span
+                    className={`absolute left-0 -bottom-2 h-[2px] bg-amber-400 transition-all duration-300 ${
+                      active ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+
+                  {active && (
+                    <span className="absolute -inset-2 rounded-lg bg-amber-400/10 blur-xl -z-10" />
+                  )}
+                </Link>
+              );
+            })}
 
             {/* Admin Button */}
             <button
@@ -118,16 +142,24 @@ export default function Navbar() {
             className="md:hidden backdrop-blur-md bg-black/40 border-b border-white/10"
           >
             <div className="flex flex-col items-center gap-6 py-8 text-lg font-medium text-white">
-              {navItems.map((item) => (
-                <Link
-                  key={item}
-                  href={`/${item === "Home" ? "" : item.toLowerCase()}`}
-                  onClick={() => setOpen(false)}
-                  className="hover:text-amber-400 transition"
-                >
-                  {item}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const active = isActive(item);
+
+                return (
+                  <Link
+                    key={item}
+                    href={`/${item === "Home" ? "" : item.toLowerCase()}`}
+                    onClick={() => setOpen(false)}
+                    className={`transition ${
+                      active
+                        ? "text-amber-400 font-semibold"
+                        : "hover:text-amber-400"
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                );
+              })}
 
               {/* Admin Button (Mobile) */}
               <button

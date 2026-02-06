@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Loader2, CheckCircle, AlertCircle, X } from "lucide-react";
 
+const CATEGORIES = ["Coffee", "Tea", "Pastries", "Cakes", "Sandwiches" , "Others"];
+
 export default function EditProductModal({
   product,
   onClose,
@@ -17,6 +19,7 @@ export default function EditProductModal({
     aroma: product.aroma || "",
     strength: product.strength || "",
     description: product.description || "",
+    category: product.category || "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,7 +27,7 @@ export default function EditProductModal({
   const [success, setSuccess] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -52,9 +55,7 @@ export default function EditProductModal({
       onUpdated(updated);
       setSuccess(true);
 
-      setTimeout(() => {
-        onClose();
-      }, 800);
+      setTimeout(onClose, 800);
     } catch {
       setError("Failed to update product");
     } finally {
@@ -74,19 +75,13 @@ export default function EditProductModal({
           initial={{ scale: 0.9, y: 30 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9 }}
-          className="
-            bg-zinc-900 backdrop-blur-xl
-            border border-white/20
-            rounded-2xl p-6
-            w-full max-w-5xl
-          "
+          className="bg-zinc-900 border border-white/20 rounded-2xl p-6 w-full max-w-5xl"
         >
           {/* HEADER */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-amber-400">
+            <h2 className="text-xl font-semibold text-amber-400">
               Edit Product ✏️
             </h2>
-
             <button onClick={onClose}>
               <X className="text-gray-400 hover:text-white" />
             </button>
@@ -95,23 +90,13 @@ export default function EditProductModal({
           {/* STATUS */}
           <AnimatePresence>
             {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mb-4 flex items-center gap-2 text-red-400 bg-red-500/10 px-4 py-3 rounded-lg"
-              >
+              <motion.div className="mb-4 flex items-center gap-2 text-red-400 bg-red-500/10 px-4 py-3 rounded-lg">
                 <AlertCircle size={18} /> {error}
               </motion.div>
             )}
 
             {success && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mb-4 flex items-center gap-2 text-green-400 bg-green-500/10 px-4 py-3 rounded-lg"
-              >
+              <motion.div className="mb-4 flex items-center gap-2 text-green-400 bg-green-500/10 px-4 py-3 rounded-lg">
                 <CheckCircle size={18} /> Product updated successfully
               </motion.div>
             )}
@@ -129,7 +114,33 @@ export default function EditProductModal({
             <AnimatedInput label="Aroma" name="aroma" value={form.aroma} onChange={handleChange} />
             <AnimatedInput label="Strength" name="strength" value={form.strength} onChange={handleChange} />
 
-            <motion.div className="sm:col-span-2">
+            {/* CATEGORY */}
+            <div>
+              <label className="text-sm text-gray-300 mb-1 block">
+                Category
+              </label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="
+                  w-full rounded-lg
+                  bg-black/40 border border-white/20
+                  p-3 outline-none
+                  focus:ring-2 focus:ring-amber-400
+                "
+              >
+                <option value="">Select category</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* DESCRIPTION */}
+            <div className="sm:col-span-2">
               <label className="text-sm text-gray-300 mb-1 block">
                 Description
               </label>
@@ -144,8 +155,9 @@ export default function EditProductModal({
                   focus:ring-2 focus:ring-amber-400
                 "
               />
-            </motion.div>
+            </div>
 
+            {/* ACTIONS */}
             <div className="sm:col-span-2 flex justify-end gap-3">
               <button
                 type="button"
@@ -175,13 +187,11 @@ export default function EditProductModal({
   );
 }
 
-/* ---------- SHARED INPUT ---------- */
+/* ---------- INPUT ---------- */
 function AnimatedInput({ label, ...props }: any) {
   return (
-    <div className="transition focus-within:scale-[1.02]">
-      <label className="text-sm text-gray-300 mb-1 block">
-        {label}
-      </label>
+    <div>
+      <label className="text-sm text-gray-300 mb-1 block">{label}</label>
       <input
         {...props}
         className="

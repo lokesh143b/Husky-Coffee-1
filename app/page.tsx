@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import  { allCoffees,Coffee } from "../data/coffeeData";
+import { allCoffees, Coffee } from "../data/coffeeData";
 
 import CoffeeCard from "@/components/CoffeeCard";
 import WhyOurCoffee from "@/components/WhyOurCoffee";
@@ -39,9 +39,8 @@ export default function Home() {
 
   return (
     <>
-     
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-24 py-20 pt-32 overflow-hidden z-10">
+      <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-24 py-20 pt-36 overflow-hidden z-10">
         {/* LEFT TEXT */}
         <div className="relative z-10 md:w-1/2 space-y-6 text-center md:text-left">
           <motion.h1
@@ -68,7 +67,8 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="bg-[#3b2a20] text-white px-8 py-3 rounded-lg hover:bg-[#2a1d16] transition mx-auto md:mx-0 block"
+            onClick={() => router.push("/menu")}
+            className="bg-[#3b2a20] text-white px-8 py-3 rounded-lg hover:bg-[#2a1d16] transition mx-auto md:mx-0 block cursor-pointer"
           >
             Explore Menu
           </motion.button>
@@ -86,9 +86,14 @@ export default function Home() {
                 ease: "easeInOut",
               }}
               whileHover={{ scale: 1.1, y: -10, zIndex: 30 }}
-              className="relative rounded-2xl overflow-hidden w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 shadow-xl cursor-pointer"
+              className="relative rounded-2xl overflow-hidden w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 shadow-xl "
             >
-              <Image src={img} alt={`Coffee ${index}`} fill className="object-cover" />
+              <Image
+                src={img}
+                alt={`Coffee ${index}`}
+                fill
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition" />
             </motion.div>
           ))}
@@ -125,11 +130,10 @@ export default function Home() {
       </section>
 
       {/* why our coffee section */}
-      <WhyOurCoffee/>
+      <WhyOurCoffee />
 
       {/* Reviews */}
-      <Reviews/>
-      
+      <Reviews />
     </>
   );
 }
